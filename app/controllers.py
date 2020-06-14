@@ -38,6 +38,7 @@ class Budget_Requests(Resource):
     def get(self,id_user):
             '''Get all budgets of one user'''
             budgets = Budget.query.filter_by(id_user=id_user).all()
+            
             j = {}
             j['data'] = []
             j['metadata'] = {}
@@ -82,11 +83,18 @@ class Movement_Requests(Resource):
         budget = Budget.query.get(id_budget)
         if not budget:
             return 'budget not found', 404
-        response={budget.amount : []}
-        print(budget.movements[0].asDict())
-        for movement in budget.movements:
-            response[budget.amount]+= [movement.id, movement.amount, movement.date, movement.entry, movement.description]
-            print(movement.asDict())
+        if id_user != budget.id_user:
+            return 'not allow', 406
+        #versione ordinata per Array
+        #response={budget.amount : []}
+        #print(budget.movements[0].asDict())
+        #for movement in budget.movements:
+        #    response[budget.amount]+= [movement.id, movement.amount, movement.date, movement.entry, movement.description]
+        #    print(movement.asDict())
+        #return jsonify(response)
+        response=[]
+        for movement in budget:
+            response.append(movement.asDict())
         return jsonify(response)
 
     
