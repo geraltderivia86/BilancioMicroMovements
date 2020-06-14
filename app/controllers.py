@@ -84,7 +84,7 @@ class Movement_Requests(Resource):
         if not budget:
             return 'budget not found', 404
         if id_user != budget.id_user:
-            return 'not allow', 406
+            return 'user not allow', 406
         #versione ordinata per Array
         #response={budget.amount : []}
         #print(budget.movements[0].asDict())
@@ -93,7 +93,7 @@ class Movement_Requests(Resource):
         #    print(movement.asDict())
         #return jsonify(response)
         response=[]
-        for movement in budget:
+        for movement in budget.movements:
             response.append(movement.asDict())
         return jsonify(response)
 
