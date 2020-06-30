@@ -178,7 +178,10 @@ class Movement_Put(Resource):
             u = Movement.query.filter_by(id_budget=id_budget,id = id_movement).first()
             if (u is None):
                 return 'Budget not found', 404
-                   
+            if u.entry:
+                budget.amount -= u.amount
+            else:
+                budget.amount += u.amount
            
             db.session.delete(u)
             db.session.commit()
